@@ -1,0 +1,252 @@
+openapi: 3.0.0
+
+info:
+  title: Attendance System 
+  description: Interview Test
+  version: 1.0.0
+
+servers:
+  - url: "localhost:9812"
+    description: Backend main server
+
+tags:
+  - name: Attendance
+    description: Operations related to attendance records
+paths:
+  /attendances:
+    get:
+      tags:
+        - Attendance
+      summary: Get all attendances of all user.
+      description: ''
+      responses:
+        '200':
+          description: OK. Attendances of all users retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Attendances of all users retrieved successfully
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 123456
+                        first_name:
+                          type: string
+                          example: Fields
+                        last_name:
+                          type: string
+                          example: Arundel
+                        email:
+                          type: string
+                          example: farundel9@noaa.gov
+                        date:
+                          type: string
+                          format: date
+                          example: '2021-08-01'
+                        chek_in_time:
+                          type: string
+                          format: date-time
+                          example: '2021-08-01T00:12:58.199Z'
+                        check_in_location:
+                          type: string
+                          example: " -6.175, 106.8286"
+                        check_out_time:
+                          type: string
+                          format: date-time
+                          example: '2021-08-01T09:21:58.199Z'
+                        check_out_location:
+                          type: string
+                          example: " -6.175, 106.8286"
+                        motes:
+                          type: string
+                          enum: [leave, sick, other]
+                        description:
+                          type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server error
+    post:
+      tags:
+      - Attendance
+      summary: User CheckIn
+      description: ''
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                notes:
+                  type: string
+                  enum: [leave, sick, other]
+                check_in_location:
+                  type: string
+                check_in_time:
+                  type: string
+                  format: date-time
+                date:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: OK. User attendance corrected successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User attendance corrected successfully.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server error
+
+  /attendances/{userId}:
+    get:
+      tags:
+        - Attendance
+      summary: Get all attendances by user id.
+      description: ''
+      parameters:
+        - in: path
+          name: userId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: user / account id
+      responses:
+        '200':
+          description: OK. Attendance of requested user retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Attendance of requested user retrieved successfully.
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 123456
+                        first_name:
+                          type: string
+                          example: Fields
+                        last_name:
+                          type: string
+                          example: Arundel
+                        email:
+                          type: string
+                          example: farundel9@noaa.gov
+                        date:
+                          type: string
+                          format: date
+                          example: '2021-08-01'
+                        check_in_time:
+                          type: string
+                          format: date-time
+                          example: "2021-09-16T16:26:33.429Z"
+                        check_in_location:
+                          type: string
+                          example: " -6.175, 106.8286"
+                        check_out_time:
+                          type: string
+                          format: date-time
+                          example: "2021-09-16T16:26:44.921Z"
+                        check_out_location:
+                          type: string
+                          example: " -6.175, 106.8286"
+                        notes:
+                          type: string
+                          enum: [leave, sick, other]
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server error
+    put:
+      tags:
+      - Attendance
+      summary: User CheckOut
+      description: ''
+      parameters:
+        - in: path
+          name: userId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: user / account id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notes:
+                  type: string
+                  enum: [leave, sick, other]
+                check_out_location:
+                  type: string
+                check_in_time:
+                  type: string
+                  format: date-time
+                date:
+                  type: string
+                  format: date
+      responses:
+        '200':
+          description: OK. User attendance corrected successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User attendance corrected successfully.
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Internal server error
